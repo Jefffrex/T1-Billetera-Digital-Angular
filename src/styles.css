@@ -1,0 +1,5 @@
+/* Bootstrap define los controles y el layout; solo retoques muy puntuales. */
+body { min-height: 100vh; }
+.topbar { background: #17283e; color: white; }
+.saldo { color: #168258; }
+.card { border-radius: 14px; }

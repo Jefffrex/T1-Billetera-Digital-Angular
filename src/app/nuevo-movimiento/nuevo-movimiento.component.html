@@ -1,0 +1,38 @@
+<section class="card shadow-sm border-0 h-100">
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+    <span class="fw-semibold">Nuevo movimiento</span>
+    <span class="badge text-bg-light">HIJO</span>
+  </div>
+  <div class="card-body p-4">
+    <p class="text-secondary small">Saldo recibido por <code>input()</code>: S/ {{ saldoActual().toFixed(2) }}</p>
+    <form (ngSubmit)="registrar()" novalidate>
+      <div class="mb-3">
+        <label for="tipo" class="form-label">Tipo de movimiento</label>
+        <select id="tipo" name="tipo" class="form-select" [(ngModel)]="tipo"
+          (ngModelChange)="interactuo = true">
+          <option value="RECARGA">Recarga</option>
+          <option value="GASTO">Gasto</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="monto" class="form-label">Monto (S/)</label>
+        <input id="monto" name="monto" type="text" inputmode="decimal"
+          class="form-control" placeholder="Ejemplo: 100.00" autocomplete="off"
+          [(ngModel)]="montoTexto" (ngModelChange)="interactuo = true"
+          [class.is-invalid]="interactuo && mensajeError !== null">
+        <div class="form-text">Solo números positivos con máximo 2 decimales.</div>
+      </div>
+
+      @if (interactuo && mensajeError !== null) {
+        <div class="alert alert-danger" role="alert">{{ mensajeError }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="mensajeError !== null">
+        Registrar movimiento
+      </button>
+    </form>
+    <p class="small text-secondary mt-3 mb-0">
+      Si la operación no es válida, el botón se deshabilita con <code>[disabled]</code>.
+    </p>
+  </div>
+</section>

@@ -1,0 +1,59 @@
+<header class="topbar py-3 shadow-sm">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <span class="fs-5 fw-semibold">Mi Billetera Digital</span>
+    <span class="badge rounded-pill text-bg-secondary">Angular · Padre / Hijo</span>
+  </div>
+</header>
+
+<main class="container py-4 py-lg-5">
+  <div class="mb-4">
+    <h1 class="h3 fw-bold mb-1">Pago y movimientos</h1>
+    <p class="text-secondary mb-0">El componente padre controla el saldo y los movimientos.</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <section class="card shadow-sm border-0 h-100">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small text-secondary text-uppercase fw-semibold">Saldo disponible</span>
+            <span class="badge text-bg-light">PADRE</span>
+          </div>
+          <p class="display-5 fw-bold saldo mb-4">S/ {{ saldo.toFixed(2) }}</p>
+          <h2 class="h5 fw-bold mb-3">Movimientos</h2>
+          @if (movimientos.length === 0) {
+            <div class="alert alert-secondary mb-0" role="status">Aún no hay movimientos.</div>
+          } @else {
+            <div class="list-group">
+              @for (movimiento of movimientos; track movimiento.id) {
+                <div class="list-group-item d-flex justify-content-between align-items-center gap-2">
+                  <span class="badge" [class.text-bg-success]="movimiento.tipo === 'RECARGA'"
+                    [class.text-bg-danger]="movimiento.tipo === 'GASTO'">
+                    {{ movimiento.tipo === 'RECARGA' ? 'Recarga' : 'Gasto' }}
+                  </span>
+                  <span class="fw-semibold" [class.text-success]="movimiento.tipo === 'RECARGA'"
+                    [class.text-danger]="movimiento.tipo === 'GASTO'">
+                    {{ movimiento.tipo === 'RECARGA' ? '+' : '-' }} S/ {{ movimiento.monto.toFixed(2) }}
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+
+    <div class="col-lg-6">
+      <!-- input(): saldo actual del padre al hijo. output(): evento válido del hijo al padre. -->
+      <app-nuevo-movimiento
+        [saldoActual]="saldo"
+        (movimientoValidado)="registrarMovimiento($event)" />
+    </div>
+  </div>
+
+  <div class="alert alert-light border mt-4 mb-0 small">
+    <strong>Comunicación entre componentes:</strong>
+    <code>input()</code> envía el saldo al hijo; <code>output()</code> avisa al padre
+    cuando hay un movimiento válido. El hijo nunca cambia el saldo directamente.
+  </div>
+</main>
